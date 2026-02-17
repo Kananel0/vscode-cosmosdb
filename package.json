@@ -163,6 +163,11 @@
     "ms-azuretools.vscode-azureresourcegroups"
   ],
   "contributes": {
+    "chatSkills": [
+      {
+        "path": "./skills/cosmosdb-best-practices"
+      }
+    ],
     "x-azResources": {
       "azure": {
         "branches": [
