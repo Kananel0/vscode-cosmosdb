@@ -10,6 +10,7 @@ import * as vscode from 'vscode';
 
 import { type NoSqlQueryConnection } from '../cosmosdb/NoSqlQueryConnection';
 import { type SerializedQueryResult } from '../cosmosdb/types/queryResult';
+import { ext } from '../extensionVariables';
 import { QueryEditorTab } from '../panels/QueryEditorTab';
 import { type JSONSchema } from '../utils/json/JSONSchema';
 import {
@@ -770,10 +771,13 @@ export class CosmosDbOperationsService {
         // Message order: [system instruction] → [one-shot examples] → [user request]
         const chatResponse = await sendChatRequest(model, systemMessage, userMessage, {}, token, oneShotMessages);
 
+        ext.outputChannel.info('[Generate Query] LLM response:');
         let responseText = '';
         for await (const chunk of chatResponse.text) {
             responseText += chunk;
+            ext.outputChannel.append(chunk);
         }
+        ext.outputChannel.appendLine('');
 
         responseText = responseText.trim();
 

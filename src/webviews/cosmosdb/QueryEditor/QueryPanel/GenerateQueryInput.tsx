@@ -243,6 +243,13 @@ export const GenerateQueryInput = () => {
         }
     }, [state.showGenerateInput, channel]);
 
+    // Focus the textarea when the input becomes visible
+    useEffect(() => {
+        if (state.showGenerateInput && textareaRef.current) {
+            textareaRef.current.focus();
+        }
+    }, [state.showGenerateInput]);
+
     // Handle model selection change
     const handleModelChange = useCallback(
         (data: OptionOnSelectData) => {
