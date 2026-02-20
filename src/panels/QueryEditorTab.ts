@@ -149,6 +149,7 @@ export class QueryEditorTab extends BaseTab {
     }
 
     public async updateQuery(query: string): Promise<void> {
+        this.query = query;
         await this.channel.postMessage({
             type: 'event',
             name: 'fileOpened',
@@ -160,14 +161,20 @@ export class QueryEditorTab extends BaseTab {
         super.initController();
 
         this.channel.on<void>('ready', async () => {
+            // Capture the initial query before any async operations to avoid a race
+            // condition: the webview's Monaco editor fires onMount which sends
+            // updateQueryText with the default "SELECT * FROM c", overwriting
+            // this.query while updateConnection is awaiting a network call.
+            const initialQuery = this.query;
+
             await this.updateConnection(this.connection);
             await this.updateQueryHistory();
             await this.updateThroughputBuckets();
-            if (this.query) {
+            if (initialQuery) {
                 await this.channel.postMessage({
                     type: 'event',
                     name: 'fileOpened',
-                    params: [this.query],
+                    params: [initialQuery],
                 });
             }
             await this.channel.postMessage({
