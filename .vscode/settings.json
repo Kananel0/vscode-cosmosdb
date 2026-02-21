@@ -18,7 +18,18 @@
   },
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.tsdk": "node_modules/typescript/lib",
-  "vscode-nmake-tools.workspaceBuildDirectories": ["."],
+  "vscode-nmake-tools.workspaceBuildDirectories": [
+    "."
+  ],
   "vscode-nmake-tools.installOsRepoRustHelperExtension": false,
-  "sarif-viewer.connectToGithubCodeScanning": "off"
+  "sarif-viewer.connectToGithubCodeScanning": "off",
+  "task.allowAutomaticTasks": true,
+  "debug.openDebug": "neverOpen",
+  "terminal.integrated.inheritEnv": false,
+  "tasks": {
+    "label": "lint on open",
+    "type": "shell",
+    "command": "npm run lint",
+    "runOn": "folderOpen"
+  }
 }
